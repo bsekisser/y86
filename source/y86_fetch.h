@@ -41,8 +41,10 @@ int fetch(y86_ref vm, void* x, y86_reg_ref valP, size_t size)
 			goto fetch_abort;
 	}
 
-//	printf("fetch: %01u:[0x%016" PRIx64 "]", size, *valP);
-//	printf("-->0x%016" PRIx64 "\n", data);
+	if(0) {
+		printf("fetch: %01zu:[0x%016" PRIx64 "]", size, (uint64_t)*valP);
+		printf("-->0x%016" PRIx64 "\n", data);
+	}
 
 	return(0);
 
@@ -102,6 +104,14 @@ int y86_fetch(y86_ref vm)
 		case _rrmov:
 			if(vm->ir.op.alu & ~3)
 				goto instruction_fault;
+//
+		case _aluop:
+		case _halt:
+		case _nop:
+		case _pop:
+		case _push:
+		case _ret:
+			break;
 	}
 
 	return(0);

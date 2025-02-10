@@ -134,6 +134,9 @@ int y86_execute(y86_ref vm)
 			else
 				vm->flags.cond = cond;
 			break;
+//
+		case _nop:
+			break;
 	}
 
 	return(0);

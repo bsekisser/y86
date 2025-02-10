@@ -13,6 +13,11 @@
 
 /* **** */
 
+#include <inttypes.h>
+#include <stdint.h>
+
+/* **** */
+
 static
 int y86_step(y86_ref vm)
 {
@@ -69,7 +74,7 @@ int main(int argc, char** argv)
 
 	printf("cycles: 0x%016" PRIx64, CYCLE);
 	printf(", icount: 0x%016" PRIx64, ICOUNT);
-	printf(", pc: 0x%016" PRIx64, PC);
+	printf(", pc: 0x%016" PRIx64, (uint64_t)PC);
 	printf(", %s", flags);
 	printf(", state(0x%08x): %s\n\n", vm->state, y86_state_lcase[vm->state]);
 

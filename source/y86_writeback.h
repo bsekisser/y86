@@ -30,6 +30,11 @@ void y86_writeback(y86_ref vm)
 				*vm->val.b = vm->val.e;
 //				REGx(vm->ir.r.b) = vm->val.e;
 			break;
-
+//
+		case _halt:
+		case _jcc:
+		case _nop:
+		case _rmmov:
+			break;
 	}
 }

@@ -11,7 +11,7 @@ int y86_rwio(y86_ref vm, y86_reg_t pat, y86_reg_p read, y86_reg_p write)
 {
 	if(pat >= (vm->mem.alloc - sizeof(y86_reg_t))) {
 		vm->state = state_adr;
-		vm->flags.data_abort;
+		vm->flags.data_abort = 1;
 		return(-1);
 	}
 
@@ -45,6 +45,14 @@ int y86_memory(y86_ref vm)
 		case _push:
 		case _rmmov:
 			return(y86_rwio(vm, vm->val.e, 0, vm->val.a));
+//
+		case _aluop:
+		case _halt:
+		case _irmov:
+		case _jcc:
+		case _nop:
+		case _rrmov:
+			break;
 	}
 
 	return(0);

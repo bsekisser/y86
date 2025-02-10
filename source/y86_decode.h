@@ -20,6 +20,14 @@ void y86_decode(y86_ref vm)
 		case _ret:
 			vm->val.a = &SP;
 			break;
+//
+		case _call:
+		case _halt:
+		case _irmov:
+		case _jcc:
+		case _mrmov:
+		case _nop:
+			break;
 	}
 
 	switch(vm->ir.code) {
@@ -34,6 +42,12 @@ void y86_decode(y86_ref vm)
 		case _push:
 		case _ret:
 			vm->val.b = &SP;
+			break;
+//
+		case _halt:
+		case _irmov:
+		case _jcc:
+		case _nop:
 			break;
 	}
 }
