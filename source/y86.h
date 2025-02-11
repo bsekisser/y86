@@ -148,3 +148,7 @@ typedef struct y86_tag {
 #define IP rSPR32(ip)
 #define PC rSPR32(pc)
 #define SP rREG(rsp)
+
+/* **** */
+
+int y86_step(y86_ref vm);
