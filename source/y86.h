@@ -21,8 +21,11 @@ typedef y86_reg_p const y86_reg_ref;
 
 typedef enum y86_rreg_t y86_rreg_t;
 enum y86_rreg_t {
-	_y86_rax, _y86_reg_rcx, _y86_reg_rdx, _y86_reg_rbx, _y86_reg_rsp, _y86_reg_rbp, _y86_reg_rsi, _y86_reg_rdi,
-	_y86_r8, _y86_r9, _y86_r10, _y86_r11, _y86_r12, _y86_r13, _y86_r14,
+	_y86_reg_rax, _y86_reg_rcx, _y86_reg_rdx, _y86_reg_rbx,
+	_y86_reg_rsp, _y86_reg_rbp, _y86_reg_rsi, _y86_reg_rdi,
+	_y86_reg_r8, _y86_reg_r9, _y86_reg_r10, _y86_reg_r11,
+	_y86_reg_r12, _y86_reg_r13, _y86_reg_r14,
+	_y86_reg_r15,
 //
 	_y86_reg_count
 };
