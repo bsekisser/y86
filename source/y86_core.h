@@ -131,6 +131,7 @@ typedef struct y86_tag {
 		}exception;
 		struct {
 			uint8_t displacement_size:4;
+			uint8_t pc_relative:4;
 		}feature;
 		uint8_t cold:1;
 		uint8_t cond:1;

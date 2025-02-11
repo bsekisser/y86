@@ -98,9 +98,11 @@ int y86_fetch(y86_ref vm)
 
 	switch(vm->ir.code) {
 		case _call:
-		case _irmov:
 		case _jcc:
-			if(fetch(vm, &vm->val.c, valP, sizeof(y86_reg_t)))
+			if(vm->flags.feature.pc_relative) {
+				if(fetch(vm, &vm->val.c, valP, vm->flags.feature.pc_relative))
+					return(-1);
+			} else if(fetch(vm, &vm->val.c, valP, sizeof(y86_reg_t)))
 				return(-1);
 			break;
 		case _mrmov:
@@ -108,10 +110,12 @@ int y86_fetch(y86_ref vm)
 			if(vm->flags.feature.displacement_size) {
 				if(fetch(vm, &vm->val.c, valP, vm->flags.feature.displacement_size))
 					return(-1);
-			} else {
-				if(fetch(vm, &vm->val.c, valP, sizeof(y86_reg_t)))
-					return(-1);
+				break;
 			}
+		__attribute__((fallthrough));
+		case _irmov:
+			if(fetch(vm, &vm->val.c, valP, sizeof(y86_reg_t)))
+				return(-1);
 			break;
 		case _rrmov:
 			if(vm->ir.op.alu & ~3)
