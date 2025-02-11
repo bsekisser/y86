@@ -11,6 +11,16 @@
 
 /* **** */
 
+uint32_t y86_run(y86_ref vm, uint32_t run_cycles)
+{
+	for(; run_cycles; run_cycles--) {
+		if(0 > y86_step(vm))
+			break;
+	}
+
+	return(run_cycles);
+}
+
 int y86_step(y86_ref vm)
 {
 	if(y86_fetch(vm))
