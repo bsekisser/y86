@@ -16,44 +16,46 @@
 /* **** */
 
 static
+int _fetch(void *const dst, const void *const src, size_t size)
+{
+	switch(size) {
+		case 1:
+			*(uint8_t*)dst = *(uint8_t*)src;
+			break;
+		case 2:
+			*(uint16_t*)dst = le16toh(*(uint16_t*)src);
+			break;
+		case 3:
+			*(uint32_t*)dst = le32toh(*(uint32_t*)src) & ((1 << 24) -1);
+			break;
+		case 4:
+			*(uint32_t*)dst = le32toh(*(uint32_t*)src);
+			break;
+		case 8:
+			*(uint64_t*)dst = le64toh(*(uint64_t*)src);
+			break;
+		default:
+			return(-1);
+	}
+
+	return(0);
+}
+
+static
 int fetch(y86_ref vm, void* x, y86_reg_ref valP, size_t size)
 {
 	if(*valP >= (vm->mem.alloc - size))
-		goto fetch_abort;
+		return(y86_exception_fetch_abort(vm));
 
 	void* p = vm->mem.data + *valP;
 	*valP += size;
 
 	CYCLE += size;
 
-	uint64_t data = 0;
-
-	switch(size) {
-		case 1:
-			data = (*(uint8_t*)x = *(uint8_t*)p);
-			break;
-		case 2:
-			data = (*(uint16_t*)x = le16toh(*(uint16_t*)p));
-			break;
-		case 4:
-			data = (*(uint32_t*)x = le16toh(*(uint32_t*)p));
-			break;
-		case 8:
-			data = (*(uint64_t*)x = le16toh(*(uint64_t*)p));
-			break;
-		default:
-			goto fetch_abort;
-	}
-
-	if(0) {
-		printf("fetch: %01zu:[0x%016" PRIx64 "]", size, (uint64_t)*valP);
-		printf("-->0x%016" PRIx64 "\n", data);
-	}
+	if(0 > _fetch(x, p, size))
+		return(y86_exception_data_abort(vm));
 
 	return(0);
-
-fetch_abort:
-	return(y86_exception_fetch_abort(vm));
 }
 
 static
@@ -98,10 +100,18 @@ int y86_fetch(y86_ref vm)
 		case _call:
 		case _irmov:
 		case _jcc:
-		case _mrmov:
-		case _rmmov:
 			if(fetch(vm, &vm->val.c, valP, sizeof(y86_reg_t)))
 				return(-1);
+			break;
+		case _mrmov:
+		case _rmmov:
+			if(vm->flags.feature.displacement_size) {
+				if(fetch(vm, &vm->val.c, valP, vm->flags.feature.displacement_size))
+					return(-1);
+			} else {
+				if(fetch(vm, &vm->val.c, valP, sizeof(y86_reg_t)))
+					return(-1);
+			}
 			break;
 		case _rrmov:
 			if(vm->ir.op.alu & ~3)

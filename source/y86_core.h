@@ -61,7 +61,7 @@ typedef enum y86_sspr32_t y86_sspr32_t;
 enum y86_sspr32_t {
 	y86_spr32_ip,
 	y86_spr32_ir,
-	y86_spr32_pc,
+//	y86_spr32_pc,
 //
 	_y86_spr32_count
 };
@@ -70,7 +70,7 @@ typedef enum y86_sspr64_t y86_sspr64_t;
 enum y86_sspr64_t {
 	y86_spr64_cycle,
 	y86_spr64_icount,
-	y86_spr64_pc,
+//	y86_spr64_pc,
 //
 	_y86_spr64_count
 };
@@ -129,6 +129,9 @@ typedef struct y86_tag {
 			}abort;
 			uint8_t illegal_instruction:1;
 		}exception;
+		struct {
+			uint8_t displacement_size:4;
+		}feature;
 		uint8_t cold:1;
 		uint8_t cond:1;
 		uint8_t run:1;
@@ -147,5 +150,5 @@ typedef struct y86_tag {
 #define ICOUNT rSPR64(icount)
 #define IR rSPR32(ir)
 #define IP rSPR32(ip)
-#define PC rSPR32(pc)
+#define PC rREG(r15)
 #define SP rREG(rsp)

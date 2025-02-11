@@ -8,7 +8,7 @@ TODO:
 
 * finish merging changes in wip:
 	- cleanup/rework struct
-	* displacement_size
+	- displacement_size
 	* pc_relative
 
 * test code
