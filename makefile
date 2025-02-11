@@ -1,8 +1,10 @@
 CFLAGS += -Wall
 CFLAGS += -Os
 CFLAGS += -MMD -MP
+CFLAGS += $(INCLUDES)
 
-INCLUDES += $(SRC_DIR)
+INCLUDES += -I$(SRC_DIR)
+INCLUDES += -I../include
 
 SRC_DIR = ../source
 SRCS := $(wildcard $(SRC_DIR)/*.c)
