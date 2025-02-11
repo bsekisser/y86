@@ -2,16 +2,14 @@
 
 /* **** */
 
+#include "y86.h"
+
+/* **** */
+
 #include <stddef.h>
 #include <stdint.h>
 
 /* **** */
-
-typedef struct y86_tag** y86_h;
-typedef y86_h const y86_href;
-
-typedef struct y86_tag* y86_p;
-typedef y86_p const y86_ref;
 
 typedef uint32_t y86_reg_t;
 typedef y86_reg_t* y86_reg_p;
@@ -75,17 +73,6 @@ enum y86_sspr64_t {
 	y86_spr64_pc,
 //
 	_y86_spr64_count
-};
-
-typedef enum y86_state_t y86_state_t;
-enum y86_state_t {
-	state_err,
-	state_aok,
-	state_halt,
-	state_adr,
-	state_ins,
-//
-	_y86_state_count,
 };
 
 typedef struct y86_tag {
@@ -162,11 +149,3 @@ typedef struct y86_tag {
 #define IP rSPR32(ip)
 #define PC rSPR32(pc)
 #define SP rREG(rsp)
-
-/* **** */
-
-y86_p y86_alloc(y86_href h2vm, void *const mem_data, size_t mem_alloc);
-int y86_exit(y86_ref vm);
-int y86_reset(y86_ref vm);
-y86_state_t y86_state(y86_ref vm);
-int y86_step(y86_ref vm);

@@ -1,5 +1,5 @@
 #include "y86_string.h"
-#include "y86.h"
+#include "y86_core.h"
 
 /* **** */
 

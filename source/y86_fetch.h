@@ -3,7 +3,7 @@
 /* **** */
 
 #include "y86_exception.h"
-#include "y86.h"
+#include "y86_core.h"
 
 /* **** */
 
