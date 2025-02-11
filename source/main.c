@@ -15,9 +15,9 @@
 
 int main(int argc, char** argv)
 {
-	y86_ref vm = y86_alloc(0, 0, MB(1));
-
 	assert(2 == argc);
+
+	y86_ref vm = y86_alloc(0, 0, MB(1));
 
 	FILE* fp = 0;
 	if(0 > (fp = fopen(argv[1], "r")))
