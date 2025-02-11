@@ -129,23 +129,32 @@ typedef struct y86_tag {
 	}val;
 
 	struct {
-		unsigned cf:1;
-		unsigned cold:1;
-		unsigned cond:1;
-		unsigned data_abort:1;
-		unsigned fetch_abort:1;
-		unsigned illegal_instruction:1;
-		unsigned irq:1;
-		unsigned run:1;
-		unsigned sf:1;
-		unsigned step:1;
-		unsigned vf:1;
-		unsigned zf:1;
+		struct {
+			uint8_t cf:1;
+			uint8_t sf:1;
+			uint8_t vf:1;
+			uint8_t zf:1;
+		}cc;
+		struct {
+			struct {
+				uint8_t data:1;
+				uint8_t fetch:1;
+			}abort;
+			uint8_t illegal_instruction:1;
+		}exception;
+		uint8_t cold:1;
+		uint8_t cond:1;
+		uint8_t run:1;
+		uint8_t step:1;
 	}flags;
 
 	y86_state_t state;
 }y86_t;
 
+#define CF vm->flags.cc.cf
+#define SF vm->flags.cc.sf
+#define VF vm->flags.cc.vf
+#define ZF vm->flags.cc.zf
 
 #define CYCLE rSPR64(cycle)
 #define ICOUNT rSPR64(icount)

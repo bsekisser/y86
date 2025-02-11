@@ -36,10 +36,10 @@ int main(int argc, char** argv)
 
 	char flags[16] = "--------", *dst = flags;
 
-	*dst++ = vm->flags.cf ? 'C' : 'c';
-	*dst++ = vm->flags.sf ? 'N' : 'p';
-	*dst++ = vm->flags.vf ? 'V' : 'v';
-	*dst++ = vm->flags.zf ? 'Z' : 'z';
+//	*dst++ = CF ? 'C' : 'c'; // TODO
+	*dst++ = SF ? 'N' : 'n';
+//	*dst++ = VF ? 'V' : 'v'; // TODO
+	*dst++ = ZF ? 'Z' : 'z';
 	*dst = 0;
 
 	printf("cycles: 0x%016" PRIx64, CYCLE);

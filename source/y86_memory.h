@@ -2,6 +2,7 @@
 
 /* **** */
 
+#include "y86_exception.h"
 #include "y86.h"
 
 /* **** */
@@ -9,11 +10,8 @@
 static
 int y86_rwio(y86_ref vm, y86_reg_t pat, y86_reg_p read, y86_reg_p write)
 {
-	if(pat >= (vm->mem.alloc - sizeof(y86_reg_t))) {
-		vm->state = state_adr;
-		vm->flags.data_abort = 1;
-		return(-1);
-	}
+	if(pat >= (vm->mem.alloc - sizeof(y86_reg_t)))
+		return(y86_exception_data_abort(vm));
 
 	y86_reg_p m = vm->mem.data + pat;
 

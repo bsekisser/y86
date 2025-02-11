@@ -2,6 +2,7 @@
 
 /* **** */
 
+#include "y86_exception.h"
 #include "y86.h"
 
 /* **** */
@@ -52,9 +53,7 @@ int fetch(y86_ref vm, void* x, y86_reg_ref valP, size_t size)
 	return(0);
 
 fetch_abort:
-	vm->state = state_adr;
-	vm->flags.fetch_abort = 1;
-	return(-1);
+	return(y86_exception_fetch_abort(vm));
 }
 
 static
@@ -92,7 +91,7 @@ int y86_fetch(y86_ref vm)
 		case _ret:
 			break;
 		default:
-			goto instruction_fault;
+			return(y86_exception_illegal_instruction(vm));
 	}
 
 	switch(vm->ir.code) {
@@ -106,7 +105,7 @@ int y86_fetch(y86_ref vm)
 			break;
 		case _rrmov:
 			if(vm->ir.op.alu & ~3)
-				goto instruction_fault;
+				return(y86_exception_illegal_instruction(vm));
 //
 		case _aluop:
 		case _halt:
@@ -118,9 +117,4 @@ int y86_fetch(y86_ref vm)
 	}
 
 	return(0);
-
-instruction_fault:
-	vm->state = state_ins;
-	vm->flags.illegal_instruction = 1;
-	return(-1);
 }

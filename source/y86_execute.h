@@ -2,6 +2,7 @@
 
 /* **** */
 
+#include "y86_exception.h"
 #include "y86.h"
 
 /* **** */
@@ -56,16 +57,16 @@ int y86_aluop(y86_ref vm)
 			valE ^= valA;
 			break;
 		default:
-			vm->state = state_ins;
-			vm->flags.illegal_instruction = 1;
-			return(-1);
+			return(y86_exception_illegal_instruction(vm));
 
 	}
 
 	vm->val.e = valE;
 
-	vm->flags.zf = (0 == valE);
-	vm->flags.sf = (0 > ((signed)valE));
+	// TODO: CF & VF
+	SF = (0 > ((signed)valE));
+	ZF = (0 == valE);
+
 	return(0);
 }
 
@@ -76,21 +77,19 @@ int y86_cond_cc(y86_ref vm, y86_ccx_t cc)
 		case cc_al:
 			return(1);
 		case cc_e:
-			return(vm->flags.zf);
+			return(ZF);
 		case cc_g:
-			return(!vm->flags.sf);
+			return(!SF);
 		case cc_ge:
-			return(!vm->flags.sf || vm->flags.zf);
+			return(!SF || ZF);
 		case cc_l:
-			return(vm->flags.sf);
+			return(SF);
 		case cc_le:
-			return(vm->flags.sf || vm->flags.zf);
+			return(SF || ZF);
 		case cc_ne:
-			return(!vm->flags.zf);
+			return(!ZF);
 		default:
-			vm->state = state_ins;
-			vm->flags.illegal_instruction = 1;
-			return(-1);
+			return(y86_exception_illegal_instruction(vm));
 	}
 
 	return(0);
@@ -111,8 +110,7 @@ int y86_execute(y86_ref vm)
 			vm->val.e = *vm->val.b - 8;
 			break;
 		case _halt:
-			vm->state = state_halt;
-			break;
+			return(y86_exception_halt(vm));
 		case _irmov:
 			vm->val.e = vm->val.c;
 			break;
