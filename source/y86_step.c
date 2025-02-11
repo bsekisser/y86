@@ -9,8 +9,6 @@
 #include "y86_pc.h"
 #include "y86_writeback.h"
 
-#include "y86_string.h"
-
 /* **** */
 
 int y86_step(y86_ref vm)

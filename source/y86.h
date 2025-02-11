@@ -2,14 +2,13 @@
 
 /* **** */
 
-#include <assert.h>
-#include <inttypes.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 /* **** */
+
+typedef struct y86_tag** y86_h;
+typedef y86_h const y86_href;
 
 typedef struct y86_tag* y86_p;
 typedef y86_p const y86_ref;
@@ -102,6 +101,9 @@ typedef struct y86_tag {
 	struct {
 		size_t alloc;
 		void* data;
+		struct {
+			uint8_t free:1;
+		}flags;
 	}mem;
 
 	struct {
@@ -151,4 +153,8 @@ typedef struct y86_tag {
 
 /* **** */
 
+y86_p y86_alloc(y86_href h2vm, void *const mem_data, size_t mem_alloc);
+int y86_exit(y86_ref vm);
+int y86_reset(y86_ref vm);
+y86_state_t y86_state(y86_ref vm);
 int y86_step(y86_ref vm);

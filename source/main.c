@@ -3,17 +3,19 @@
 
 /* **** */
 
+#include <assert.h>
 #include <inttypes.h>
 #include <stdint.h>
+#include <stdio.h>
 
 /* **** */
 
+#define KB(_x) ((_x) * 1024)
+#define MB(_x) KB(KB(_x))
+
 int main(int argc, char** argv)
 {
-	y86_t yt, *vm = &yt;
-
-	yt.mem.alloc = 1 * 1024 * 1024;
-	yt.mem.data = malloc(yt.mem.alloc);
+	y86_ref vm = y86_alloc(0, 0, MB(1));
 
 	assert(2 == argc);
 
@@ -21,20 +23,14 @@ int main(int argc, char** argv)
 	if(0 > (fp = fopen(argv[1], "r")))
 		goto cleanup;
 
-	if(0 > fread(yt.mem.data, yt.mem.alloc, 1, fp))
+	if(0 > fread(vm->mem.data, vm->mem.alloc, 1, fp))
 		goto cleanup;
 
 	fclose(fp); fp = 0;
 
-	for(unsigned x = 0; x < _y86_reg_count; x++)
-		REGx(x) = 0;
+	y86_reset(vm);
 
-	SP = 0x00010000;
-	PC = 0;
-
-	yt.state = state_aok;
-
-	for(;state_aok == yt.state;)
+	for(;state_aok == y86_state(vm);)
 		if(y86_step(vm))
 			break;
 
@@ -62,8 +58,7 @@ int main(int argc, char** argv)
 	}
 
 cleanup:
-	if(yt.mem.data)
-		free(yt.mem.data);
+	y86_exit(vm);
 
 	if(fp)
 		fclose(fp);
