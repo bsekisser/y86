@@ -1,13 +1,13 @@
-#include "y86_core.h"
+#include "y86lib_core.h"
 
 /* **** */
 
-#include "y86_fetch.h"
-#include "y86_decode.h"
-#include "y86_execute.h"
-#include "y86_memory.h"
-#include "y86_pc.h"
-#include "y86_writeback.h"
+#include "y86lib_fetch.h"
+#include "y86lib_decode.h"
+#include "y86lib_execute.h"
+#include "y86lib_memory.h"
+#include "y86lib_pc.h"
+#include "y86lib_writeback.h"
 
 /* **** */
 

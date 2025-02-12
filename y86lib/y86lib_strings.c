@@ -1,5 +1,6 @@
-#include "y86_string.h"
-#include "y86_core.h"
+#include "y86lib_strings.h"
+
+#include "y86lib_core.h"
 
 /* **** */
 

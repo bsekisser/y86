@@ -1,37 +1,18 @@
-CFLAGS += -Wall
-CFLAGS += -Os
-CFLAGS += -MMD -MP
-CFLAGS += $(INCLUDES)
-
-INCLUDES += -I$(SRC_DIR)
-INCLUDES += -I../include
-
-SRC_DIR = ../source
-SRCS := $(wildcard $(SRC_DIR)/*.c)
-
-OBJ_DIR := build-$(shell $(CC) -dumpmachine)
-OBJS := $(patsubst $(SRC_DIR)/%.c, %.o, $(SRCS))
-
-TARGET := y86
-
-VPATH += $(SRC_DIR)
+export ROOT = $(PWD)
 
 
+.PHONY: all
+all : build-y86lib build-y86run
 
-all: $(OBJ_DIR)
-
-
-
-clean:
-	rm -rf $(OBJ_DIR)
-
-.PHONY: $(OBJ_DIR)
-$(OBJ_DIR):
-	@[ -d $@ ] || mkdir -p $@
-	make -C $(OBJ_DIR) -f ../makefile $(TARGET)
-
-$(TARGET): $(OBJS)
+include makefile.common
 
 
+.PHONY: build-y86lib
+build-y86lib: | $(OBJ_DIR)
+	$(info >>>>)
+	make -C $(OBJ_DIR) -f $(ROOT)/y86lib.mk
 
--include *.d
+.PHONY: build-y86run
+build-y86run: build-y86lib | $(OBJ_DIR)
+	$(info >>>>)
+	make -C $(OBJ_DIR) -f $(ROOT)/y86run.mk

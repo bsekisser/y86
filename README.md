@@ -2,13 +2,8 @@
 yet another take on an y86 emulator.
 
 TODO:
-* build as library
+- build as library (partial, wip)
 * cpp class
-- separate out proper exception handling
-
-* finish merging changes in wip:
-	- cleanup/rework struct
-	- displacement_size
-	- pc_relative
+- separate out proper exception handling (partial, wip)
 
 * test code

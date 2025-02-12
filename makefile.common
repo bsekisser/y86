@@ -1,0 +1,69 @@
+# setup
+
+
+
+CFLAGS += -Wall
+CFLAGS += -MMD -MP
+CFLAGS += $(INCLUDES)
+CFLAGS += -Os
+
+ifdef TARGET_LIB_SO
+	CFLAGS += -fpic
+	LDFLAGS += -shared
+endif
+
+ifdef SRC_DIR
+	ifneq ($(SRC_DIR),"")
+		INCLUDES += -I$(SRC_DIR)
+	endif
+endif
+
+INCLUDES += -I$(ROOT)/include
+
+OBJ_DIR := build-$(shell $(CC) -dumpmachine)
+
+ifdef ROOT
+	OBJ_DIR := $(ROOT)/$(OBJ_DIR)
+endif
+
+#ifdef TARGET
+#	ifneq ($(TARGET),"")
+#		OBJ_DIR := $(OBJ_DIR)/$(TARGET)
+#	endif
+#endif
+
+OBJS = $(patsubst $(SRC_DIR)/%.c, %.o, $(SRCS))
+
+VPATH += $(SRC_DIR)
+
+
+
+# build rules
+
+$(info ********)
+$(info CFLAGS = $(CFLAGS))
+$(info CURDIR = $(CURDIR))
+$(info INCLUDES = $(INCLUDES))
+$(info ROOT = $(ROOT))
+$(info SRC_DIR = $(SRC_DIR))
+$(info OBJ_DIR = $(OBJ_DIR))
+$(info TARGET = $(TARGET))
+
+clean:
+	rm -rf $(OBJ_DIR)
+
+clean-all: clean
+	rm -rf *.a *.d *.o *.so
+
+.PHONY: $(OBJ_DIR)
+$(OBJ_DIR):
+	@[ -d $@ ] || mkdir -p $@
+	cd $@
+
+
+
+# include depends
+
+
+
+-include $(OBJ_DIR)/*.d

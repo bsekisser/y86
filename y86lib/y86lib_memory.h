@@ -2,8 +2,8 @@
 
 /* **** */
 
-#include "y86_exception.h"
-#include "y86_core.h"
+#include "y86lib_exception.h"
+#include "y86lib_core.h"
 
 /* **** */
 
